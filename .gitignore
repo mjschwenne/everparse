@@ -20,3 +20,8 @@ fstar-src/fstar/*.checked
 everparse/**
 everparse_*.tar.gz
 everparse_*.zip
+
+# nix related or generated files 
+.envrc
+.direnv
+.dir-locals.el
