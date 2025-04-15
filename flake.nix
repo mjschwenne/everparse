@@ -25,13 +25,17 @@
         karamelp = karamel.packages.${system}.karamel.overrideAttrs {
           patches = [./nix/karamel-install.patch];
         };
+        everparse = pkgs.callPackage ./nix/everparse.nix {
+          fstar = fstarp;
+          karamel = karamelp;
+        };
         dir-locals = pkgs.callPackage ./nix/dir-locals.nix {
           karamel = karamelp;
         };
       in {
-        packages.default = pkgs.callPackage ./everparse.nix {
-          fstar = fstarp;
-          karamel = karamelp;
+        packages = {
+          inherit everparse;
+          default = everparse;
         };
         devShells.default = with pkgs;
           mkShell {
