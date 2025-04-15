@@ -1,6 +1,7 @@
 {
   pkgs,
   karamel,
+  everparse-home,
   stdenv,
   ...
 }:
@@ -21,9 +22,9 @@ stdenv.mkDerivation {
                        ("--include"
                          "${karamel}/krmllib"
                          "--include"
-                         "./src/lowparse"
+                         "${everparse-home}/src/lowparse"
                          "--include"
-                         "./src/asn1")
+                         "${everparse-home}/src/asn1")
                        )))))
     '';
 
