@@ -36,7 +36,7 @@ in
   stdenv.mkDerivation {
     inherit version pname propagatedBuildInputs nativeBuildInputs;
 
-    src = ./.;
+    src = ./..;
     outputs = ["out"];
 
     KRML_HOME = karamel;
