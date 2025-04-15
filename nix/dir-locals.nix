@@ -24,7 +24,7 @@ stdenv.mkDerivation {
                          "--include"
                          "${everparse-home}/src/lowparse"
                          "--include"
-                         "${everparse-home}/src/asn1")
+                         "${everparse-home}/src/ASN1")
                        )))))
     '';
 
