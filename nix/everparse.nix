@@ -56,6 +56,9 @@ in
       mkdir -p $out/lib/3d/prelude
       cp ./src/3d/EverParseEndianness.h $out/lib/3d
       cp -r ./src/3d/prelude $out/lib/3d/prelude
+      mkdir -p $out/lib/asn1
+      cp -r ./src/ASN1/*.fst $out/lib/asn1
+      cp -r ./src/ASN1/*.fst.checked $out/lib/asn1
     '';
     postInstall = ''
       # OCaml leaves its full store path in produced binaries

@@ -31,7 +31,6 @@
         };
         dir-locals = pkgs.callPackage ./nix/dir-locals.nix {
           karamel = karamelp;
-          # everparse-home = builtins.toString ./.;
           everparse-home = builtins.getEnv "PWD";
         };
       in {
