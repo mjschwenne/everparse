@@ -28,6 +28,7 @@
         everparse = pkgs.callPackage ./nix/everparse.nix {
           fstar = fstarp;
           karamel = karamelp;
+          z3 = fstar.packages.${system}.z3;
         };
         dir-locals = pkgs.callPackage ./nix/dir-locals.nix {
           karamel = karamelp;
@@ -45,12 +46,12 @@
                 fstarp
                 karamelp
                 fstar.packages.${system}.z3
-                ocaml
-                dune_3
                 gnused
                 dir-locals
               ]
-              ++ (with pkgs.ocamlPackages; [
+              ++ (with pkgs.ocaml-ng.ocamlPackages_4_14; [
+                ocaml
+                dune_3
                 batteries
                 stdint
                 ppx_deriving_yojson

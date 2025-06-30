@@ -7,7 +7,7 @@
   stdenv,
   symlinks,
   which,
-  z3_4_8_5,
+  z3,
 }: let
   pname = "everparse";
   version = "v2025.04.01";
@@ -31,7 +31,7 @@
     sha
     karamel.passthru.lib
   ];
-  nativeBuildInputs = [fstar removeReferencesTo symlinks which z3_4_8_5 gnused] ++ (with ocamlPackages; [ocaml dune_3 findlib menhir]);
+  nativeBuildInputs = [fstar removeReferencesTo symlinks which z3 gnused] ++ (with ocamlPackages; [ocaml dune_3 findlib menhir]);
 in
   stdenv.mkDerivation {
     inherit version pname propagatedBuildInputs nativeBuildInputs;
