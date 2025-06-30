@@ -72,4 +72,5 @@ in
     '';
 
     dontFixup = true;
+    dontDetectOcamlConflicts = true;
   }
