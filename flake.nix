@@ -29,6 +29,7 @@
           fstar = fstarp;
           karamel = karamelp;
           z3 = fstar.packages.${system}.z3;
+          ocamlPackages = pkgs.ocaml-ng.ocamlPackages_4_14;
         };
         dir-locals = pkgs.callPackage ./nix/dir-locals.nix {
           karamel = karamelp;
@@ -73,7 +74,7 @@
                 findlib
                 karamelp.passthru.lib
               ]);
-
+            dontDetectOcamlConflicts = true;
             shellHook = ''
               export KRML_HOME=${karamelp}
               export EVERPRASE_HOME=./.
