@@ -1,16 +1,18 @@
 {
   fstar,
   karamel,
+  pulse,
   gnused,
   ocamlPackages,
   removeReferencesTo,
   stdenv,
   symlinks,
+  rust-bin,
   which,
   z3,
 }: let
   pname = "everparse";
-  version = "v2025.04.01";
+  version = "v2025.07.22";
   propagatedBuildInputs = with ocamlPackages; [
     batteries
     stdint
@@ -31,7 +33,7 @@
     sha
     karamel.passthru.lib
   ];
-  nativeBuildInputs = [fstar removeReferencesTo symlinks which z3 gnused] ++ (with ocamlPackages; [ocaml dune_3 findlib menhir]);
+  nativeBuildInputs = [fstar rust-bin removeReferencesTo symlinks which z3 gnused] ++ (with ocamlPackages; [ocaml dune_3 findlib menhir]);
 in
   stdenv.mkDerivation {
     inherit version pname propagatedBuildInputs nativeBuildInputs;
@@ -40,6 +42,7 @@ in
     outputs = ["out"];
 
     KRML_HOME = karamel;
+    PULSE_HOME = pulse;
     enableParallelBuilding = true;
 
     configurePhase = ''
@@ -59,6 +62,14 @@ in
       mkdir -p $out/lib/asn1
       cp -r ./src/ASN1/*.fst $out/lib/asn1
       cp -r ./src/ASN1/*.fst.checked $out/lib/asn1
+      mkdir -p $out/evercddl
+      cp -r ./lib/evercddl $out/evercddl
+      mkdir -p $out/cddl
+      cp -r ./src/cddl/pulse $out/cddl
+      cp -r ./src/cddl/spec $out/cddl
+      mkdir -p $out/cbor
+      cp -r ./src/cbor/pulse $out/cbor
+      cp -r ./src/cbor/spec $out/cbor
     '';
     postInstall = ''
       # OCaml leaves its full store path in produced binaries

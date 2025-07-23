@@ -2,34 +2,49 @@
   description = "A Flake for Everparse packaging & development";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    rust-overlay.url = "github:oxalica/rust-overlay";
     fstar.url = "github:FStarLang/FStar";
     karamel.url = "github:FStarLang/karamel";
     karamel.inputs.fstar.follows = "fstar";
+    pulse = {
+      url = "github:mjschwenne/pulse";
+      inputs = {
+        fstar.follows = "fstar";
+        karamel.follows = "karamel";
+      };
+    };
     flake-utils.url = "github:numtide/flake-utils";
   };
 
   outputs = {
     nixpkgs,
+    rust-overlay,
     fstar,
     karamel,
+    pulse,
     flake-utils,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (
       system: let
+        overlays = [(import rust-overlay)];
         pkgs = import nixpkgs {
-          inherit system;
+          inherit system overlays;
         };
+        fstar-nixpkgs = import fstar.inputs.nixpkgs {inherit system;};
         fstarp = fstar.packages.${system}.fstar;
         karamelp = karamel.packages.${system}.karamel.overrideAttrs {
           patches = [./nix/karamel-install.patch];
         };
+        pulsep = pulse.packages.${system}.pulse;
         everparse = pkgs.callPackage ./nix/everparse.nix {
           fstar = fstarp;
           karamel = karamelp;
           z3 = fstar.packages.${system}.z3;
           ocamlPackages = pkgs.ocaml-ng.ocamlPackages_4_14;
+          rust-bin = pkgs.rust-bin.stable.latest.default;
+          pulse = pulsep;
         };
         dir-locals = pkgs.callPackage ./nix/dir-locals.nix {
           karamel = karamelp;
@@ -44,13 +59,16 @@
           mkShell {
             buildInputs =
               [
+                rust-bin.stable.latest.default
                 fstarp
-                karamelp
                 fstar.packages.${system}.z3
+                karamelp
+                pulsep
+                openssl
                 gnused
                 dir-locals
               ]
-              ++ (with pkgs.ocaml-ng.ocamlPackages_4_14; [
+              ++ (with fstar-nixpkgs.ocaml-ng.ocamlPackages_4_14; [
                 ocaml
                 dune_3
                 batteries
@@ -76,6 +94,8 @@
               ]);
             dontDetectOcamlConflicts = true;
             shellHook = ''
+              export FSTAR_EXE=${fstarp}/bin/fstar.exe
+              export PULSE_HOME=${pulsep}
               export KRML_HOME=${karamelp}
               export EVERPRASE_HOME=./.
               ln -f -s ${dir-locals}/dir-locals.el .dir-locals.el
