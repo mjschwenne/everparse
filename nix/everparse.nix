@@ -7,6 +7,7 @@
   removeReferencesTo,
   stdenv,
   symlinks,
+  openssl,
   rust-bin,
   which,
   z3,
@@ -31,9 +32,11 @@
     sexplib
     re
     sha
+    mtime
+    memtrace
     karamel.passthru.lib
   ];
-  nativeBuildInputs = [fstar rust-bin removeReferencesTo symlinks which z3 gnused] ++ (with ocamlPackages; [ocaml dune_3 findlib menhir]);
+  nativeBuildInputs = [fstar rust-bin removeReferencesTo symlinks which z3 gnused openssl] ++ (with ocamlPackages; [ocaml dune_3 findlib menhir]);
 in
   stdenv.mkDerivation {
     inherit version pname propagatedBuildInputs nativeBuildInputs;
@@ -49,6 +52,8 @@ in
       export FSTAR_EXE=${fstar}/bin/fstar.exe
       patchShebangs --build ./src/3d/version.sh
     '';
+
+    patches = [./no-cargo-build.patch];
 
     installPhase = ''
       mkdir -p $out/bin

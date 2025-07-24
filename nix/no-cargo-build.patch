@@ -1,0 +1,22 @@
+diff --git a/Makefile b/Makefile
+index 00c5bf2a..c5c6b24e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -117,7 +117,7 @@ submodules:
+ .PHONY: submodules
+ 
+ cbor:
+-	+$(MAKE) -C src/cbor/pulse/det
++	+$(MAKE) -C src/cbor/pulse/det c.do
+ 
+ cbor-interface: $(filter-out src/cbor/spec/raw/%,$(filter src/cbor/spec/%,$(ALL_CHECKED_FILES)))
+ 
+@@ -249,7 +249,7 @@ cose-test: cose-extract-test cose-extracted-test
+ .PHONY: cose-test
+ 
+ cose: cbor
+-	+$(MAKE) -C src/cose
++	+$(MAKE) -C src/cose build-c
+ 
+ .PHONY: cose
+ 
