@@ -42,7 +42,7 @@
           fstar = fstarp;
           karamel = karamelp;
           z3 = fstar.packages.${system}.z3;
-          ocamlPackages = pkgs.ocaml-ng.ocamlPackages_4_14;
+          ocamlPackages = fstar-nixpkgs.ocaml-ng.ocamlPackages_4_14;
           rust-bin = pkgs.rust-bin.stable.latest.default;
           pulse = pulsep;
         };
