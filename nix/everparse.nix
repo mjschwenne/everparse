@@ -36,7 +36,18 @@
     memtrace
     karamel.passthru.lib
   ];
-  nativeBuildInputs = [fstar rust-bin removeReferencesTo symlinks which z3 gnused openssl] ++ (with ocamlPackages; [ocaml dune_3 findlib menhir]);
+  nativeBuildInputs =
+    [
+      fstar
+      rust-bin.stable.latest.default
+      removeReferencesTo
+      symlinks
+      which
+      z3
+      gnused
+      openssl
+    ]
+    ++ (with ocamlPackages; [ocaml dune_3 findlib menhir]);
 in
   stdenv.mkDerivation {
     inherit version pname propagatedBuildInputs nativeBuildInputs;

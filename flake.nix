@@ -43,16 +43,21 @@
           karamel = karamelp;
           z3 = fstar.packages.${system}.z3;
           ocamlPackages = fstar-nixpkgs.ocaml-ng.ocamlPackages_4_14;
-          rust-bin = pkgs.rust-bin.stable.latest.default;
           pulse = pulsep;
         };
+        rustPlatform' = pkgs.makeRustPlatform {
+          cargo = pkgs.rust-bin.stable.latest.default;
+          rustc = pkgs.rust-bin.stable.latest.default;
+        };
+        cborrs = pkgs.callPackage ./nix/cborrs.nix {rustPlatform = rustPlatform';};
+        evercosign = pkgs.callPackage ./nix/evercosign.nix {rustPlatform = rustPlatform';};
         dir-locals = pkgs.callPackage ./nix/dir-locals.nix {
           karamel = karamelp;
           everparse-home = builtins.getEnv "PWD";
         };
       in {
         packages = {
-          inherit everparse;
+          inherit everparse cborrs evercosign;
           default = everparse;
         };
         devShells.default = with pkgs;
