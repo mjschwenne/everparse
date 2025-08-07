@@ -83,6 +83,9 @@ in
       mkdir -p $out/cddl
       cp -r ./src/cddl/pulse $out/cddl
       cp -r ./src/cddl/spec $out/cddl
+      mkdir -p $out/src/cddl/tool
+      cp -r ./src/cddl/tool/extraction-c $out/src/cddl/tool/extraction-c
+      cp -r ./src/cddl/tool/extraction-rust $out/src/cddl/tool/extraction-rust
       mkdir -p $out/cbor
       cp -r ./src/cbor/pulse $out/cbor
       cp -r ./src/cbor/spec $out/cbor
